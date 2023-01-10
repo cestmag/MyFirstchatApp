@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/about.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+   
+      <p id="usernamepunk"><span id="usernamepunk2"><%=name%></span><span>でログイン中</span></p>
+      <div class="chris">
+      <h2>Chatinko</h2>
+    <nav>
+     
+      <ul class="main-nav">
+        <li><a href="#">Logout</a></li>
+        <li><a href="/mypage?name=<%=name%>">Mypage</a></li>
+        <!--<li><a href="/mypage/:iii">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+        <li><a href="/search?name=<%=name%>">Search</a></li>
+       </ul>
+      
+    </nav>
+    </div>
+    </header>
+  <div id="main-area">
+  Hello, who are you? No you don't need to answer.<br>
+  Mom didn't tell you it's risky to tell your private infor to someone you don't really know?<br>
+  Anyway, welcome to Chattinko, the biggest erotic place in this world.<br>
+  Huh? You don't get what I've been saying? Get out here immediately fuck you.<br>
+  </div>
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ 
+    
+   
+</body>
+
+
+
+</html>

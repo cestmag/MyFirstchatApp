@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style3.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+      <p id="usernamepunk">未ログインだにょ</p>
+      <div class="chris">
+      <h2>ChatApp</h2>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="/">Login</a></li>
+        <li><a href="/index">Register</a></li>
+        <!--<li><a href="/mypage/">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+       <li><a href="/search">Search</a></li> 
+       </ul>
+    </nav>
+    </div>
+    </header>
+    
+    <div id="main-area">
+        <div id="message-here"></div>
+        <div id="seach-result"></div>
+        </div>
+  
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+<form id="send-new-thread"></form>
+
+ 
+
+    
+     <script src="jquery.js"></script>
+     <script>
+    //const whatsyourname=document.getElementById("usernamepunk2")
+    // const name10=whatsyourname.innerText
+    // console.log(name10+" this the user name10 on ejs")
+     //const realname=thisusername
+
+     
+
+  　　/*let ajaxObj=*/$.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+         //  flou=response
+          
+        // alert("success1:"+response)//ここも具体的な値が表示されるが下の場合は[object object]となるfuck
+         //ここは成功すんのに下の場合は成功せん
+          var messages2= document.getElementById('message-here')
+
+          data=JSON.parse(response);
+        //  alert("success1 parse:"+data)   
+          
+        for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            var ident=data[a].id
+            li.classList.add("chatboxx")
+            li.setAttribute("id","boxx-"+ident)
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+
+
+
+            
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            
+            //いいね　および返信ボタン
+            const buttonline=document.createElement('div')
+
+            const goodbutton=document.createElement('button')
+            goodbutton.setAttribute("id","good-"+data[a].id)
+            goodbutton.classList.add("cestpasmafaute")
+           
+              goodbutton.textContent="♡:"+data[a].good//👍 not yet
+              console.log(data[a].goodname+"nulllll2")
+            
+            /*+ databaseからいいね値の数も読み取りここに乗っけるそして、databaseには
+            threadにいいねしたusernameも乗っておりそれにより、すでに押されたか否か判別し、表示を変える
+            本来は各ユーザーのパソコン内にファイルを作るがdont know well about how to do that   */
+            
+
+            goodbutton.onclick=function goodsend(){
+              alert("Sadly, you have to login to push the good button")
+             //idでどのスレッドにいいねされたか特定しサーバーに送信
+                  //表示をまだ押してないときへ
+　　　　　　　　//if not yet　　　　
+                
+                  //表示をすでに押したへ
+            }
+            buttonline.append(goodbutton)
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.setAttribute("id","cont-"+ident)
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+
+             li.append(buttonline)
+            li.append(thetime)
+            
+            messages2.append(li)
+           
+          } 
+
+   
+
+
+
+
+        }
+      })      
+    
+     
+     
+     
+     
+     
+     
+       //const realname=thisusername!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    /*  $.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+          console.log(response);
+          var messages2= document.getElementById('message-here')
+
+          var data= JSON.parse(response);
+          for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            messages2.append(li)
+          }
+        }
+      }) */
+
+
+
+  </script>
+</body>
+
+
+
+</html>

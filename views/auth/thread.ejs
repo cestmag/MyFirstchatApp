@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style3.css"> <!-- /public/style だとだめ-->
+  
+  <title>thread</title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+   
+      <p id="usernamepunk"><span id="usernamepunk2"><%=name%></span><span>でログイン中</span></p>
+      <div class="chris">
+      <h2>ChatApp</h2>
+      <!--<a href="/introduce?name=<%=name%>""></a>-->
+    <nav>
+     
+      <ul class="main-nav">
+        <li><a href="/thread">Logout</a></li>
+        <li><a href="/mypage?name=<%=name%>">Mypage</a></li>
+        <!--<li><a href="/mypage/:iii">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+        <li><a href="/search?name=<%=name%>">Search</a></li>
+       </ul>
+      
+    </nav>
+    </div>
+    </header>
+  <div id="main-area">
+  <div id="message-here"></div>
+  <div id="seach-result"></div>
+  </div>
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <form id="send-new-thread">
+    <input type="text" placeholder="Message here" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Send</button>
+    </form>
+
+    
+     <script src="jquery.js"></script>
+     <script>
+  //  let ajaxList = [];
+   //   var flou=[];
+   //  var thedataofresearch={};
+//!!!!!!!!!!!!!! mypageからthreadへ行くときたまに未ログイン状態になる!!!!!!!!!!!!!!重大エラー
+     const whatsyourname=document.getElementById("usernamepunk2")
+     const name10=whatsyourname.innerText
+     console.log(name10+" this the user name10 on ejs")
+     //const realname=thisusername
+
+     
+
+  　　/*let ajaxObj=*/$.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+         //  flou=response
+          
+        // alert("success1:"+response)//ここも具体的な値が表示されるが下の場合は[object object]となるfuck
+         //ここは成功すんのに下の場合は成功せん
+          var messages2= document.getElementById('message-here')
+
+          data=JSON.parse(response);
+        //  alert("success1 parse:"+data)   
+          
+        for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            var ident=data[a].id
+            li.classList.add("chatboxx")
+            li.setAttribute("id","boxx-"+ident)
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+
+
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+            //いいね　および返信ボタン
+            const buttonline=document.createElement('div')
+
+            const goodbutton=document.createElement('button')
+            goodbutton.setAttribute("id","good-"+data[a].id)
+            goodbutton.classList.add("cestpasmafaute")
+            if(data[a].goodname.indexOf("/"+name10+"/")!==-1){//完全一致にしないといけない!!!!!!!!!!!!!!!!!!!!!
+              goodbutton.textContent="♥:"+data[a].good//good already pushed
+              goodbutton.classList.add("pushedd")
+              console.log(data[a].goodname+"nulllll")
+            }else{
+              goodbutton.textContent="♡:"+data[a].good//👍 not yet
+              console.log(data[a].goodname+"nulllll2")
+            }
+            /*+ databaseからいいね値の数も読み取りここに乗っけるそして、databaseには
+            threadにいいねしたusernameも乗っておりそれにより、すでに押されたか否か判別し、表示を変える
+            本来は各ユーザーのパソコン内にファイルを作るがdont know well about how to do that   */
+            
+
+            goodbutton.onclick=function goodsend(){
+              console.log("you dont knowwwww thread")
+              var dutch;
+              if (this.textContent.indexOf("♥")!==-1){
+               dutch=0;
+               //this.textContent
+              }else{
+                dutch=1
+              }
+                  socket.emit("good",{gla: this.id.slice(5), which:dutch})//idでどのスレッドにいいねされたか特定しサーバーに送信
+                  //表示をまだ押してないときへ
+　　　　　　　　//if not yet　　　　
+                
+                  //表示をすでに押したへ
+            }
+            buttonline.append(goodbutton)
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.setAttribute("id","cont-"+ident)
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+
+             li.append(buttonline)
+            li.append(thetime)
+            
+            messages2.append(li)
+           
+          } 
+
+   
+
+
+
+
+        }
+      })   
+     // alert("put into ajaxlist: get_message"+ajaxObj)
+     // ajaxList.push(ajaxObj);
+
+//let ajaxObj2=[]
+ /*   $(function(){//もう一つのajaxとの関係で、　clickされる、ここのajaxが
+      //console.log($('#searchbox').val()+"last christasf")
+
+      
+
+
+
+
+
+
+
+
+
+   $('#search-button').on('click',function(){
+     
+      
+    
+       // console.log($('#searchbox').val()+"last christasf")
+      /* ajaxObj2= */
+   /*   $.ajax({
+            url:"http://localhost:5000" + "/search",
+           //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: 'GET', //post はエラー
+            data: {query: $('#searchbox').val()},
+            dataType: 'json'
+            
+}     // */
+           //送るデータの種類no numberとおなじでなければいけないとか？
+      /*    ) 
+         .done(function(response2){ 
+           alert("babafumika "+response2)
+           thedataofresearch=response2
+           alert("the dateforsearch is"+thedataofresearch)
+        thedataofresearch=JSON.stringify(thedataofresearch)
+           alert("the stringfied of thenaameofsearch"+thedataofresearch)   */
+    //      var searchres=document.getElementById('seach-result') 
+         // $('#seach-result').empty()
+              //ここまではいくbut [object object]となる.fuck
+             //kokoからだめ　上では成功する。違いは何?????????? success: function型も試したbut failed
+ /*      var response22=JSON.stringify(response2)
+        alert("success2 before pass to when.apply:"+response22)//ここが[]なるとずっと読み込み中になる
+        console.log(response22+" 検索決kさ")
+          search=JSON.parse(response22||"null")         
+          alert("success2 parsed(before apply)"+search)//ここがnullでないとずっと読み込み中
+          */
+         // var data= JSON.parse( JSON.stringify(response2)||"null")
+           // $('#seach-result').empty()
+  /*
+            //var messages222= document.getElementById('seach-result')
+            console.log('do they know its christams?')
+           
+            var html_response = '<ul>';
+              $.each(data, function(key, value){
+                html_response += '<li>' + value + '</li>';
+            });
+            html_response += '</ul>';
+            $('seach-result').html(html_response)   */
+            
+   // /*
+
+      //     var data= JSON.parse(response2||"null"); // +||"null"
+   // /*
+   
+     /*     for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            alert("NOW IN THE FORLOOP"+thecontent.innerText+" "+thetime.innerText)
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            searchres.append(li)
+            console.log(document.getElementById('seach-result'))
+           
+            alert("SMALL END")
+          }  */
+         
+             // */
+       /*   })   
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+    console.log("XMLHttpRequest.status: "+XMLHttpRequest.status);
+    console.log("textStatus:"+textStatus);
+    console.log("errorThrown:"+errorThrown);
+    alert("idiot")
+})
+/*
+.always(function(){
+  alert("fuuuuuuuuuuuuuuk")
+})     */
+     //    console.log('gonna put into ajaxlist'+ajaxList) 
+
+   //   }
+  //    ) 
+// alert("ONCLICK END")
+
+  // }) 
+  // console.log('gonna put into ajaxlist: search:   '+ajaxList) 
+   //alert("ajaxobj of serach is: "+ajaxObj2)
+//ajaxList.push(ajaxObj2);  
+
+
+
+
+
+
+
+
+
+
+
+
+/* はずす
+   $.when.apply($, ajaxList)
+   .done(function(){
+    alert("success1-1 when.apply:"+data)
+    const messages2=document.getElementById('message-here')
+    
+   // alert("success1:"+response)//ここも具体的な値が表示されるが下の場合は[object object]となるfuck
+         //ここは成功すんのに下の場合は成功せん
+          
+
+       var data=JSON.parse(flou);
+          alert("success1 parse:"+data)
+
+
+    for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            messages2.append(li)
+         
+          }
+           data=[];
+          
+
+
+           var response22=JSON.stringify(thedataofresearch)
+        alert("success2 before pass to when.apply:"+response22)//ここが[]なるとずっと読み込み中になる
+        console.log(response22+" 検索決kさ")
+        var search=JSON.parse(response22||"null")
+          alert("success2 parsed"+search)
+
+
+
+
+
+
+          const message222=document.getElementById('seach-result')
+          alert("search[] is when.apply:"+search)
+          for(var a=0; a< search.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==search[a].name){
+              sendername.innerText=search[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=search[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=search[a].messageContent2
+            alert("search: content: Is "+thecontent.innerText)
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            message222.append(li)
+           alert("hey brother2")
+          }
+       search=[];
+
+
+    // リクエストのすべての結果が成功だった場合の処理
+   console.log('success'+ajaxList.length)
+  alert("ajaxlist0: "+ajaxList[0])
+  alert("ajaxlist1: "+ajaxList[1]) 
+
+   ajaxList=[]
+   console.log('success:after'+ajaxList.length)
+}).fail(function(){
+    // リクエストのいずれかの結果が失敗だった場合の処理
+    console.log('fail')
+});
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // ajaxList.push(ajaxObj);
+   /*   success: function(response2){
+              var messages222= document.getElementById('seach-result')
+                 //seach-result
+              var data= JSON.parse(response2);
+              for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            messages222.append(li)
+          }
+            }
+          })  */
+
+  </script>
+</body>
+
+
+
+</html>
+
+
+

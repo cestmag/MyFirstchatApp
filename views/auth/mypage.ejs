@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/mypage.css"> <!-- /public/style だとだめ-->
+  
+  <title>Thepublic</title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+    <p id="usernamepunk"><span id="usernamepunk22"><%=name%></span><span>のMypage</span></p>
+      <div class="chris">
+      <h2>ChatApp</h2>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="/thread">Logout</a></li>
+        <li><a href="/thread?name=<%=name%>">Thread</a></li>
+        <!--<li><a href="/backtothread/%=<name2%>">Thread</a></li>-->
+        <li><a href="/search?name=<%=name%>">Search</a></li>
+       </ul>
+    </nav>
+    </div>
+    </header>
+    
+    <div id="main-area">
+      <div id="message-here"></div>
+      <div id="seach-result">
+      <div class="lac" >The messages you wrote are all here, face yourself in the past haha</div>
+      </div>
+      </div>
+  
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <!--<form id="send-new-thread">
+    <input type="text" placeholder="new thread" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Create</button>
+    </form> -->
+
+    
+     <script src="jquery.js" ></script>
+     <script >
+       //import{socket} from "/public/user.js"
+        
+        
+         const whatsyourname=document.getElementById("usernamepunk22")
+         console.log(whatsyourname)
+     const name10=whatsyourname.innerText
+     $.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+         //  flou=response
+          
+        // alert("success1:"+response)//ここも具体的な値が表示されるが下の場合は[object object]となるfuck
+         //ここは成功すんのに下の場合は成功せん
+          var messages2= document.getElementById('message-here')
+
+          data=JSON.parse(response);
+        //  alert("success1 parse:"+data)   
+       /*  if(data.length<=0){
+          $('#message-here').context="You haven't written any messgaes lol"
+         }  */
+        //have to add delete button
+        for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+          if(data[a].name===name10){
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            li.setAttribute("id","mypa-"+data[a].id)
+           
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            sendername.innerText=data[a].name
+            
+         /*   if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            } */
+           //日図家
+          const buttons=document.createElement('button')
+          buttons.classList.add("buttons")
+          buttons.innerHTML="Delete"
+          //buttons.innerHTML="<button id='" + data[a].id + "' onclick='deleteMessage(this)'>Delete</button>";
+          buttons.setAttribute("id","butt-"+data[a].id)
+        buttons.onclick=function annoying(){
+          console.log(this.id.slice(5))
+         var really=confirm("Really wanna delete the message? Once you do that, it never comes up.")
+          /* if(this.innerHTML="Delete"){ 
+           
+         
+           this.innerHTML="Really delete"
+
+             }else if( */ //this.innerHTML="Really delete" //) {
+               
+              if(really){
+           socket.emit('deletethread',this.id.slice(5)) //dont know why this works. yesterday it didnt. socket
+           
+        /*   var del=document.getElementById("cont-"+this.id.slice(5))
+           console.log("after emit of deletedth")
+           del.textContent="deleted"
+           this.remove()
+           del.classList.add("redline") */
+             }
+          // }
+          /*   var id=buttons.getAttribute("id");
+             
+         const avril=document.createElement('div')
+         avril.setAttribute("name",id)
+         avril.setAttribute("id","gonnabeDeleted") */
+        // li.append(avril)
+     /*   buttons.setAttribute("name","gonnabeDeleted")
+        var ohhh=this.id.slice(5)
+        
+        buttons.setAttribute("data-id",ohhh)
+         console.log('it sucks man') */
+          } 
+          
+          //id='" + li.id + "' onclick='deleteMessage(this);'>Delete</button>
+           
+
+// display delete button here too
+//非公開ボタンもいる？
+
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.setAttribute("id","cont-"+data[a].id)
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+           // li.innerHTML="<button data-id='" + data[a].id + "' onclick='deleteMessage(this);'>Delete</button>";
+            li.append(buttons)
+            li.append(thetime)
+            
+            messages2.append(li)
+          }
+          } 
+
+       
+
+      /*  function deleteMessage(self){
+         var id=self.getAttribute("id");
+         const avril=document.createElement('div')
+         avril.setAttribute("name",id)
+         avril.setAttribute("id","gonnabeDeleted")
+         
+
+         
+}  */
+
+
+
+
+        }
+      })   
+
+
+      function deleteMessage(self){
+       var id=self.getAttribute("id");
+        //var id=12
+         const avril=document.createElement('div')
+         avril.setAttribute("name",id)
+         avril.setAttribute("id","gonnabeDeleted")
+         
+
+         
+}  
+
+
+
+
+
+
+
+
+
+
+
+        //console.log(santa+"vivalaviva")
+      //ここで自分の名前だけをもつメッセージを表示する
+   /*   $.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+          console.log(response);
+          var messages2= document.getElementById('message-here')
+
+          var data= JSON.parse(response);
+          for(var a=0; a< data.length; a++){
+              if(data[a].name===name10){
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            li.innerHTML=data[a].messageContent2
+            messages2.appendChild(li)
+              }
+          }
+        }
+      }) */
+
+
+
+  </script>
+</body>
+
+
+
+</html>

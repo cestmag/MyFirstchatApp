@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/stylelogin.css">
+  
+  <script defer src="http://localhost:5000/socket.io/socket.io.js"></script>
+  <script defer src="users.js"></script>
+  <title>chattinko</title> 
+
+
+</head>   
+<body>
+  
+<form action="/auth/authentication" method="POST">   <!-- action= /auth/index   -->   
+<h2>ChatApp Login</h2>
+  <div class="b-group">
+   <input type="text" placeholder="username" class="startupp" id="koko" name="name">
+   <input type="password" placeholder="password" class="startupp" id="ko" name="password">
+   
+   </div>
+   <ul class="c-group">
+   <li><button type="submit" id="entrybutton"　>Enter</button></li>
+   <li><a href="/nonthread">Skip</a></li>
+   <li><a href="/index">Register</a></li>
+  </ul>
+ </form>  
+    
+ <% if(messages.error){ %>
+    <p class="alert"><%-messages.error %></p>
+    <% } %> 
+ 
+ 
+ <!-- {{#if message}}
+    <h4 class="alert man">{{message}}</h4>
+
+    {{/if}}-->
+
+
+</body>
+
+
+
+</html>

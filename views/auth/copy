@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style3.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+      <p id="usernamepunk"><span id="usernamepunk2"><%=name%></span><span>でログイン中</span></p>
+      <div class="chris">
+      <h2>Chatinko</h2>
+    <nav>
+     
+      <ul class="main-nav">
+        <li><a href="#">Logout</a></li>
+        <li><a href="/mypage">Mypage</a></li>
+        <!--<li><a href="/mypage/:iii">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+        <li>
+        <form method="get" id="searchengine"><!--onsubmit="return false"-->
+        <input type="text" placeholder="keyword" name="search" id="searchbox">
+         <button type="submit" id="search-button"　>Go</button>
+        </form>
+        </li>
+       </ul>
+      
+    </nav>
+    </div>
+    </header>
+  <div id="main-area">
+  <div id="message-here"></div>
+  <div id="seach-result"></div>
+  </div>
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <form id="send-new-thread">
+    <input type="text" placeholder="メッセージを優しく挿入してね...///♡" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Send</button>
+    </form>
+
+    
+     <script src="jquery.js"></script>
+     <script>
+       
+     const whatsyourname=document.getElementById("usernamepunk2")
+     const name10=whatsyourname.innerText
+     //const realname=thisusername
+
+      $.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+          var messages2= document.getElementById('message-here')
+
+          var data= JSON.parse(response);
+          for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            messages2.append(li)
+          }
+        }
+      })
+
+    $(function(){
+      console.log($('#searchbox').val()+"last christasf")
+
+      
+
+
+
+
+
+
+
+
+
+   $('#search-button').on('click',function(){
+     
+      
+    
+        console.log($('#searchbox').val()+"last christasf")
+          $.ajax({
+            url:"http://localhost:5000" + "/search",
+           //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: 'GET',
+            data: {query: $('#searchbox').val()},
+            dataType: 'json',
+            success: function(response2){
+              var data= JSON.parse(response2||"null"); // +||"null"
+   console.log("fuuuuuuuuuuuuuuuuuuuk")
+for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+ var li=document.createElement('div')
+ li.classList.add("chatboxx")
+ //名前
+ const sendername=document.createElement('p')
+ sendername.classList.add("nameofSender") 
+ 
+
+ if(name10!==data[a].name){
+   sendername.innerText=data[a].name
+ 
+// li.innerHTML=data[a].name+":"+data[a].messageContent2
+
+ }else{
+   sendername.innerText='You'
+  li.classList.add("myOwnmessage")
+// li.innerHTML="You:"+data[a].messageContent2 
+ }
+//日図家
+ const thetime=document.createElement('p')
+ thetime.classList.add("thetime")
+ thetime.innerText=data[a].date
+ //内容
+ const thecontent=document.createElement('div')
+ thecontent.classList.add("thecontent")
+ thecontent.innerText=data[a].messageContent2
+ //htmlにはこの順番で乗る
+li.append(sendername) 
+ li.append(thecontent)
+ li.append(thetime)
+ //seach-result
+ $('#seach-result').append(li)
+}     // */
+            }
+          })
+        
+          
+       
+      }
+      ) 
+
+
+    })
+   /*   success: function(response2){
+              var messages222= document.getElementById('seach-result')
+                 //seach-result
+              var data= JSON.parse(response2);
+              for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            messages222.append(li)
+          }
+            }
+          })  */
+
+  </script>
+</body>
+
+
+
+</html>
+
+
+
+
+以下のがbest
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style3.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+      <p id="usernamepunk"><span id="usernamepunk2"><%=name%></span><span>でログイン中</span></p>
+      <div class="chris">
+      <h2>Chatinko</h2>
+    <nav>
+     
+      <ul class="main-nav">
+        <li><a href="#">Logout</a></li>
+        <li><a href="/mypage">Mypage</a></li>
+        <!--<li><a href="/mypage/:iii">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+        <li>
+        <form method="get" id="searchengine"><!--onsubmit="return false"-->
+        <input type="text" placeholder="keyword" name="search" id="searchbox">
+         <button type="submit" id="search-button"　>Go</button>
+        </form>
+        </li>
+       </ul>
+      
+    </nav>
+    </div>
+    </header>
+  <div id="main-area">
+  <div id="message-here"></div>
+  <div id="seach-result"></div>
+  </div>
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <form id="send-new-thread">
+    <input type="text" placeholder="メッセージを優しく挿入してね...///♡" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Send</button>
+    </form>
+
+    
+     <script src="jquery.js"></script>
+     <script>
+    let ajaxList = [];
+      
+
+
+     const whatsyourname=document.getElementById("usernamepunk2")
+     const name10=whatsyourname.innerText
+     //const realname=thisusername
+
+  　　let ajaxObj=$.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+          alert(response)//ここも具体的な値が表示されるが下の場合は[object object]となるfuck
+         //ここは成功すんのに下の場合は成功せん
+          var messages2= document.getElementById('message-here')
+
+          var data= JSON.parse(response);
+          for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            messages2.append(li)
+           
+          }
+        }
+      })   
+      alert("put into ajaxlist:"+ajaxObj)
+      ajaxList.push(ajaxObj);
+
+
+      ajaxObj=$(function(){//もう一つのajaxとの関係で、　clickされる、ここのajaxが
+      //console.log($('#searchbox').val()+"last christasf")
+
+      
+
+
+
+
+
+
+
+
+
+   $('#search-button').on('click',function(){
+     
+      
+    
+       // console.log($('#searchbox').val()+"last christasf")
+      /* ajaxObj= */$.ajax({
+            url:"http://localhost:5000" + "/search",
+           //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: 'GET', //post はエラー
+            data: {query: $('#searchbox').val()},
+            dataType: 'json'
+            
+}     // */
+           //送るデータの種類no numberとおなじでなければいけないとか？
+          )
+         .done(function(response2){
+          var searchres=document.getElementById('seach-result') 
+          $('#seach-result').empty()
+              //ここまではいくbut [object object]となる.fuck
+             //kokoからだめ　上では成功する。違いは何?????????? success: function型も試したbut failed
+        var response22=JSON.stringify(response2)
+        alert("success"+response22)
+        console.log(response22)
+          var data= JSON.parse(response22)
+         // var data= JSON.parse( JSON.stringify(response2)||"null")
+           // $('#seach-result').empty()
+  /*
+            //var messages222= document.getElementById('seach-result')
+            console.log('do they know its christams?')
+           
+            var html_response = '<ul>';
+              $.each(data, function(key, value){
+                html_response += '<li>' + value + '</li>';
+            });
+            html_response += '</ul>';
+            $('seach-result').html(html_response)   */
+            
+   // /*
+
+      //     var data= JSON.parse(response2||"null"); // +||"null"
+   // /*
+          for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            alert("NOW IN THE FORLOOP"+thecontent.innerText+" "+thetime.innerText)
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            searchres.append(li)
+            console.log(document.getElementById('seach-result'))
+           
+            alert("SMALL END")
+          } 
+          alert("after for"+response22) 
+             // */
+          })   
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+    console.log("XMLHttpRequest.status: "+XMLHttpRequest.status);
+    console.log("textStatus:"+textStatus);
+    console.log("errorThrown:"+errorThrown);
+    alert("idiot")
+})
+/*
+.always(function(){
+  alert("fuuuuuuuuuuuuuuk")
+})     */
+         console.log('gonna put into ajaxlist'+ajaxList) 
+ajaxList.push(ajaxObj);  
+      }
+      ) 
+// alert("ONCLICK END")
+
+   })
+   console.log('gonna put into ajaxlist'+ajaxList) 
+ajaxList.push(ajaxObj);  
+
+   $.when.apply($, ajaxList).done(function(){
+    // リクエストのすべての結果が成功だった場合の処理
+   console.log('success'+ajaxList.length)
+   ajaxList[0]
+   ajaxList[1]  
+   ajaxList=[]
+   console.log('success:after'+ajaxList.length)
+}).fail(function(){
+    // リクエストのいずれかの結果が失敗だった場合の処理
+    console.log('fail')
+});
+ 
+  // ajaxList.push(ajaxObj);
+   /*   success: function(response2){
+              var messages222= document.getElementById('seach-result')
+                 //seach-result
+              var data= JSON.parse(response2);
+              for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==data[a].name){
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            messages222.append(li)
+          }
+            }
+          })  */
+
+  </script>
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style3.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+      <p id="usernamepunk"><span id="usernamepunk2"><%=name%></span><span>でログイン中</span></p>
+      <div class="chris">
+      <h2>Chatinko</h2>
+    <nav>
+     
+      <ul class="main-nav">
+        <li><a href="#">Logout</a></li>
+        <li><a href="/mypage">Mypage</a></li>
+        <!--<li><a href="/mypage/:iii">Mypage</a></li>--> <!--'/mypage?name='+ encodeURIuigig(taro)'-->
+        <li>
+        <form method="get" id="searchengine"><!--onsubmit="return false"-->
+        <input type="text" placeholder="keyword" name="search" id="searchbox">
+         <button type="submit" id="search-button">Go</button>
+        </form>
+        </li>
+       </ul>
+      
+    </nav>
+    </div>
+    </header>
+  <div id="main-area">
+  <div id="message-here"></div>
+  <div id="seach-result"></div>
+  </div>
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <form id="send-new-thread">
+    <input type="text" placeholder="メッセージを優しく挿入してね...///♡" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Send</button>
+    </form>
+
+    
+     <script src="jquery.js"></script>
+     <script>
+   
+      
+
+
+     const whatsyourname=document.getElementById("usernamepunk2")
+     const name10=whatsyourname.innerText
+     //const realname=thisusername
+  var queryparam={
+    type: 'get',
+    url: "http://localhost:5000"+ "/get_messages",
+    dataType:'json'
+  }
+
+  var queryparam2=[];
+  $('#search-button').on('click',function(){   
+    queryparam2={
+    type: 'get',
+    url: "http://localhost:5000"+ "/search",
+    dataType:'json',
+    data: {query: $('#searchbox').val()},
+  }
+})
+
+  $.when(
+    $.ajax(queryparam),
+    $.ajax(queryparam2),
+  )
+ .done(function (res1, res2) {
+  var sample1 = {
+    data: res1   //res1[0]
+   /* testStatus: res1[1],
+    jqXHR: res1[2] */
+  };
+  var sample2 = {
+    data: res2 //res2[0]
+   /* testStatus: res2[1],
+    jqXHR: res2[2] */
+  };
+  
+  var messages2= document.getElementById('message-here')
+  alert("0:"+sample1.data)
+     var string1=JSON.stringify(sample1.data)
+          var dataa= JSON.parse(string1);
+          alert("1:"+dataa)
+          for(var a=0; a< dataa.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            if(name10!==dataa[a].name){
+              sendername.innerText=dataa[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+            }else{
+              sendername.innerText='You'
+             li.classList.add("myOwnmessage")
+           // li.innerHTML="You:"+data[a].messageContent2 
+            }
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=dataa[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=dataa[a].messageContent2
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            
+            messages2.append(li)
+           
+          }
+
+
+          var messages22= document.getElementById('seach-result')
+    var string222=JSON.stringify(sample2.data)
+var data22= JSON.parse(string222);
+for(var a=0; a< data22.length; a++){//もし自分と同じ名前だったら背景かえる
+  var li=document.createElement('div')
+  li.classList.add("chatboxx")
+  //名前
+  const sendername=document.createElement('p')
+  sendername.classList.add("nameofSender") 
+  
+
+  if(name10!==data22[a].name){
+    sendername.innerText=data22[a].name
+  
+ // li.innerHTML=data[a].name+":"+data[a].messageContent2
+
+  }else{
+    sendername.innerText='You'
+   li.classList.add("myOwnmessage")
+ // li.innerHTML="You:"+data[a].messageContent2 
+  }
+ //日図家
+  const thetime=document.createElement('p')
+  thetime.classList.add("thetime")
+  thetime.innerText=data22[a].date
+  //内容
+  const thecontent=document.createElement('div')
+  thecontent.classList.add("thecontent")
+  thecontent.innerText=data22[a].messageContent2
+  //htmlにはこの順番で乗る
+ li.append(sendername) 
+  li.append(thecontent)
+  li.append(thetime)
+  
+  messages22.append(li)
+ 
+}
+
+
+
+
+ /* appendList(sample1.data.forms);
+  appendList(sample2.data.forms);
+  appendList(sample3.data.forms); */
+}).fail()
+
+
+    
+
+
+ // copy2をそのままぺーsと
+          
+  </script>
+</body>
+
+
+
+</html>

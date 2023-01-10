@@ -1,0 +1,315 @@
+body{
+   
+    
+    background-color:black;
+    color: chartreuse;
+    margin: 0;
+ 
+     
+}
+header{
+    display: flex;
+    background-color: white;
+    width: 100%;
+    height: 10%;
+    position: fixed;
+    z-index: 100;
+    
+}
+.chris{
+    display: flex;
+    width: 80%;
+    margin: 0;
+}
+#username{
+   color: tomato; 
+   width: 20%;
+   margin: 0;
+   padding-top: 1.5%;
+   padding-left: 1.5%;
+   font-size: 20px;
+}
+ 
+header h2{
+    color: rgb(0, 0, 0);
+   width: 50%;
+   padding-left: 30%;
+}
+
+.main-nav{
+  
+    display: flex;
+    justify-content: flex-end;
+    height: 60%;
+    width: 50%;
+  
+    margin-top: 8%;
+   
+    margin-right: 0;
+    padding-right: 20%;
+    list-style: none;
+    color: rgb(0, 0, 0);
+    
+
+}
+.main-nav li{
+    padding-top:2% ;
+    padding-left: 30%;
+    
+}
+#chat{
+    position: relative;
+    display:flex;
+   padding-top: 5%;
+   padding-bottom: 4%;
+  
+    
+}
+#timeline{
+   
+    display: flex;
+    width: 90%;
+   flex-direction: column;
+
+}
+#repscreen{
+    width: 10%;
+    padding-left: 50px;
+}
+.input-group{
+ position: fixed;
+ display: flex;
+ bottom: 0;
+ left: 0;
+ width: 100%;
+ margin: 0 -500%;
+ padding: 0 500%;
+ height: 7%;
+
+}
+
+.input-group-append{
+    padding: 0;
+     width: 20%;
+     display: flex;
+    
+}
+.btn{
+   margin-left: 0;
+   font-size: 30px;
+   border: none;
+   width: 50%;
+   color: rgb(255, 255, 255);
+   background-color:#0d812a ; 
+   border: 5px outset #0d812a;
+   padding-left: 5%;
+   border-radius: 5px 5px 5px 5px;
+}
+.btn:hover{
+   opacity: 0.8;
+}
+#sendBtn{
+    background: #0d812a url(koooooo.png) no-repeat; 
+    
+    background-size: contain;
+    background-position: left;
+    
+}
+#cancelBtn{
+    background: #0d812a url(太いバツのアイコン2.png) no-repeat; 
+    
+    background-size: contain;
+    background-position: left;
+}
+.form-control{
+    
+
+    background-color: rgb(24, 54, 36);
+    
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+  width: 80%;
+ border: none;
+ border-radius: 5px 5px 5px 5px;
+}
+.form-control:focus{
+    border: none;
+  
+    outline: none; 
+}
+.bigboxis{
+    display: flex;
+    width: 100%;
+    margin: 5px;
+    
+}
+.box{
+  
+    background-color: rgba(23, 55, 82);
+    color:chartreuse;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 48%;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    border-radius: 5px 5px 5px 5px;
+     
+    animation: fadein 0.7s forwards;
+    
+}
+
+.box p{
+    line-height: 0.4;
+}
+.unde{
+    position: relative;
+  display: flex;
+}
+.butter{
+   margin: 0; 
+   padding: 0;
+}   
+.box button{
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+.paint{
+    background-color:crimson;
+   
+}
+.upperbar{
+    position: relative;
+    display: flex;
+   
+    padding: 0;
+    margin: 0;
+}
+.clockk{
+  margin:0;
+   padding-left: 1%;
+   padding-top: 1%;
+   
+}
+
+
+.highex{
+    position: absolute;
+    top: 0.1%;
+    right: 1%;
+    display: flex;
+    justify-content: flex-end;
+    
+    color:rgb(255, 0, 119);
+    
+    list-style: none;
+    padding-right: 0;
+    padding-top: 0;
+    margin-right: 0;
+    margin-top: 0;
+   
+   
+}
+
+.highex li:hover{
+    color: coral;
+}
+.message-box{
+    color: darkgoldenrod;
+}
+.contentmain{
+    margin: 0;
+    padding: 0;
+}
+.manga{
+    background-color: darkmagenta;
+    padding: 0.5%;
+    width: 48%;
+    margin-left: auto;
+    line-height: 0.4;
+    border-radius: 5px 5px 5px 5px;
+    color: darkturquoise;
+
+    animation: fadein 0.7s forwards;
+}
+@keyframes fadein {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+.faded{
+    animation: fadeout 0.5s forwards;
+}
+@keyframes fadeout {
+	0% {opacity: 1}
+	100% {opacity: 0}
+}
+.triangle1{
+    background-color: seagreen;
+    position: relative;
+  
+}
+
+.triangle1::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -18px;
+    border: 18px solid transparent;
+    border-left: 18px solid seagreen;
+}
+
+
+.butter{
+    margin:0;
+    padding:0;
+}
+.hyou{
+    position: absolute;
+    top: 0.1%;
+    right: 1%;
+    display: flex;
+    justify-content: flex-end;
+    
+    color:rgb(166, 255, 0);
+    
+    list-style: none;
+    padding-right: 0;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+.hyou li:hover{
+    color: coral;
+}
+.mangi{
+    background-color: darkmagenta;
+    padding: 0.5%;
+    width: 48%;
+    margin-left: auto;
+    line-height: 0.4;
+    border-radius: 5px 5px 5px 5px;
+    color: darkturquoise;
+
+    animation: fadein 0.7s forwards; 
+}
+.triangle2{
+    background-color: darkmagenta;
+    position: relative;
+    
+}
+.triangle2::before{
+    content: "";
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  margin-top: -15px;
+  border: 15px solid transparent;
+  border-right: 15px solid darkmagenta;
+}
+.irokae{
+    background-color: rgba(23, 55, 82, 0.548);
+}
+.changethecolor{
+    background-color: rgb(207, 1, 1);
+}

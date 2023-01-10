@@ -1,0 +1,19 @@
+success2 before pass to when.apply:ここがからでない
+
+success2 parsed(before apply)
+
+ajaxobj of serach is:
+
+success1
+
+success1 parse
+
+success1-1 when.apply:
+
+search[] is when.apply:
+
+ajaxlist1:
+上は時々動く
+
+success2 before pass to when.apply:ここがから[]だと、100%
+success2 parsed(before apply)が出て終わり、読み込み中が続く

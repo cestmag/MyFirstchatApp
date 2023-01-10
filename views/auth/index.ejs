@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/style.css">
+  
+  <script defer src="http://localhost:5000/socket.io/socket.io.js"></script>
+  <script defer src="users.js"></script>
+  <title>startfromhere</title> 
+
+
+</head>   
+<body>
+<form action="/auth/post-register" method="POST" id="entrygate">   <!-- action= /auth/index   -->   
+<h2>ChatApp Register</h2>
+  <div class="b-group">
+   <input type="text" placeholder="username" class="startupp" id="koko" name="name">
+   <input type="password" placeholder="password" class="startupp" id="ko" name="password">
+   
+   </div>
+   <ul class="c-group">
+   <li><button type="submit" id="entrybutton"　>Register and Login</button></li>
+   
+   <li><a href="/nonthread">Skip</a></li>
+   <li><a href="/">Login</a></li>
+  </ul>
+ </form>  
+ <% if(messages.error){ %>
+  <div class="alert">
+  <p><%-messages.error %></p>
+  <p><%-messages.error2 %></p>
+  </div>
+  <% } %> 
+   <!-- {{#if message}}
+    <h4 class="alert man">{{message}}</h4>
+
+    {{/if}} -->
+
+
+</body>
+
+
+
+</html>

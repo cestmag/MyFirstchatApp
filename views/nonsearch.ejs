@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="">
+ 
+  <link rel="stylesheet" href="/styleForSea.css"> <!-- /public/style だとだめ-->
+  
+  <title></title> 
+  
+  
+<script defer src="http://localhost:5000/socket.io/socket.io.js">// user.jsのioのある場所</script>
+
+<script defer src="users.js"></script>
+
+
+</head>   
+<body>
+  <header>
+    <p id="usernamepunk">未ログイン</p>
+      <div class="chris">
+    <div class="google">      
+     <h2>ChatApp</h2>
+     <form method="get" id="searchengine"><!--onsubmit="return false"-->
+        <input type="text" placeholder="A keyword" name="search" id="searchbox">
+         <button type="button" id="search-button"　>Go</button><!--https://teratail.com/questions/14935-->
+        </form>
+        </div>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="/">Login</a></li>
+        <li><a href="/index">Register</a></li>
+        <!--<li><a href="/backtothread/%=<name2%>">Thread</a></li>-->
+        <li><a href="/thread">Thread</a></li>
+       </ul>
+    </nav>
+    </div>
+    </header>
+    
+    <div id="main-area">
+        <div id="message-here"><p id="subtitle">The results are displayed here......</p></div>
+        <div id="search-result">
+          <div id="tips">
+            Tips:<br>
+        Wanna roughly search threads posted at a certain time:<span>type the time.</span><br> 
+        Wanna see threads posted by a specific person: <span>type the username.</span><br>
+        <br>
+        The rusults include the keyword somewhere<br>
+        </div> 
+        </div>
+        </div>
+  
+  <!--  <form action="/room" method="POST">
+  <input name="room" type="text" required>
+  <button type="submit">New Room</button>
+</form> -->
+
+
+
+ <!--<form id="send-new-thread">
+    <input type="text" placeholder="new thread" class="thread-box" id="threadbox" name="thread">
+    <button type="submit" id="createbtn">Create</button>
+    </form> -->
+
+    
+     <script src="jquery.js"></script>
+     <script>
+         
+         const whatsyourname=document.getElementById("usernamepunk22")
+        // console.log(whatsyourname)
+    // const name10=whatsyourname.innerText
+     
+        //console.log(santa+"vivalaviva")
+      //ここで自分の名前だけをもつメッセージを表示する
+    /*  $.ajax({
+        url: "http://localhost:5000"+ "/get_messages",
+        method: "GET",
+        success: function(response){
+          console.log(response);
+          var messages2= document.getElementById('message-here')
+
+          var data= JSON.parse(response);
+          for(var a=0; a< data.length; a++){
+              if(data[a].name===name10){
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            li.innerHTML=data[a].messageContent2
+            messages2.appendChild(li)
+              }
+          }
+        }
+      }) */
+      $(function(){//もう一つのajaxとの関係で、　clickされる、ここのajaxが
+      //console.log($('#searchbox').val()+"last christasf")
+
+      
+
+
+
+
+
+
+
+      //var jqxhr;
+//$('#searchbox').on('input',
+//$('#search-button').on('click',)
+    
+    var searching=function(){
+     
+      
+     if($('#searchbox').val()!==""){
+       // console.log($('#searchbox').val()+"last christasf")
+      /* ajaxObj= */ /*jqxhr = */$.ajax({
+            url:"http://localhost:5000" + "/searchengine",
+           //contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: 'GET', //post はエラー
+            data: {query: $('#searchbox').val()},
+            dataType: 'json',
+           // async: true
+}     // */
+           //送るデータの種類no numberとおなじでなければいけないとか？
+          )
+         .done(function(response2){
+          var searchres=document.getElementById('message-here')
+          
+           
+          $('#message-here').empty()
+        
+              //ここまではいくbut [object object]となる.fuck
+             //kokoからだめ　上では成功する。違いは何?????????? success: function型も試したbut failed
+        var response22=JSON.stringify(response2)
+        //alert("success"+response22)
+     //   console.log(response22)
+          var data= JSON.parse(response22)
+         // var data= JSON.parse( JSON.stringify(response2)||"null")
+           // $('#seach-result').empty()
+  /*
+            //var messages222= document.getElementById('seach-result')
+            console.log('do they know its christams?')
+           
+            var html_response = '<ul>';
+              $.each(data, function(key, value){
+                html_response += '<li>' + value + '</li>';
+            });
+            html_response += '</ul>';
+            $('seach-result').html(html_response)   */
+            
+   // /*
+
+      //     var data= JSON.parse(response2||"null"); // +||"null"
+   // /*
+   if(data.length>1){
+   $('<p class="subb"></p>').html('The result : '+data.length+' threads related to the keyword are found').appendTo('#message-here')
+        }else if(data.length===1){
+            $('<p class="subb"></p>').html('The result : '+data.length+' thread related to the keyword is found').appendTo('#message-here')
+        }else{
+            $('<p class="subb"></p>').html('The result : Sorry, nothing related to the keyword is found').appendTo('#message-here')
+        }
+          for(var a=0; a< data.length; a++){//もし自分と同じ名前だったら背景かえる
+            var li=document.createElement('div')
+            li.classList.add("chatboxx")
+            //名前
+            const sendername=document.createElement('p')
+            sendername.classList.add("nameofSender") 
+            
+
+            
+              sendername.innerText=data[a].name
+            
+           // li.innerHTML=data[a].name+":"+data[a].messageContent2
+          
+           
+           //日図家
+            const thetime=document.createElement('p')
+            thetime.classList.add("thetime")
+            thetime.innerText=data[a].date
+            //内容
+            const thecontent=document.createElement('div')
+            thecontent.classList.add("thecontent")
+            thecontent.innerText=data[a].messageContent2
+        //    alert("NOW IN THE FORLOOP"+thecontent.innerText+" "+thetime.innerText)
+            //htmlにはこの順番で乗る
+           li.append(sendername) 
+            li.append(thecontent)
+            li.append(thetime)
+            //seach-result
+            searchres.append(li)
+         //   console.log(document.getElementById('seach-result'))
+           
+          // alert("SMALL END")
+          } 
+     // alert("after for"+response22) 
+              //*/
+            //  jqxhr.abort();
+         //   console.log('loading............')
+          })   
+        .fail(function(){
+  
+    alert("idiot")
+})
+/*
+.always(function(){
+  alert("fuuuuuuuuuuuuuuk")
+})     */
+        // console.log('gonna put into ajaxlist'+ajaxList) 
+    }else{
+        $('#message-here').empty()
+        $('<p class="subb"></p>').html('The results are displayed here......').appendTo('#message-here') 
+
+       console.log('you  you are my universe and i just want put you first')
+    } 
+   // $('#search-button').on('click',finalresult)
+   // $('#searchbox').val()=""
+      }
+    $('#searchbox').on('input', searching)  
+// alert("ONCLICK END")
+$('#search-button').on('click',searching)
+
+
+$("#searchbox").keypress(function(e) {
+  if (e.keyCode == 13) {
+    // ここに処理を記述
+    return false;
+  }
+}); 
+   })
+  </script>
+</body>
+
+
+
+</html>
